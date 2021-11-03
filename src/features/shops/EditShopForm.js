@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 
-import { selectShopById, updateShop } from './shopsSlice'
+import { selectShopById, updateShop, fetchShops } from './shopsSlice'
 
 export const EditShopForm = ({ match }) => {
     const dispatch = useDispatch()
@@ -11,7 +11,7 @@ export const EditShopForm = ({ match }) => {
     const { shopId } = match.params
     const shop = useSelector(state => selectShopById(state, shopId))
     // console.log(shop)
-    
+
     const [title, setTitle] = useState(shop.title)
     const [category, setCategory] = useState(shop.category)
     const [description, setDescription] = useState(shop.description)
@@ -20,7 +20,7 @@ export const EditShopForm = ({ match }) => {
 
 
     const onTitleChanged = e => setTitle(e.target.value)
-    const onCategoryChanged = e => setCategory(e.target.value)    
+    const onCategoryChanged = e => setCategory(e.target.value)
     const onDescriptionChanged = e => setDescription(e.target.value)
     const onCityChanged = e => setCity(e.target.value)
 
@@ -42,6 +42,7 @@ export const EditShopForm = ({ match }) => {
                 console.error('Failed to save this item:',  err)
             } finally {
                 setAddRequestStatus('idle')
+                dispatch(fetchShops())
                 history.push(`/shops/${shopId}`)
             }
         }
@@ -53,7 +54,7 @@ export const EditShopForm = ({ match }) => {
           <form className="w3-container">
             <label htmlFor="title">Shop Title:</label>
             <input
-              className="w3-input" 
+              className="w3-input"
               type="text"
               id="title"
               name="title"
@@ -63,7 +64,7 @@ export const EditShopForm = ({ match }) => {
             />
             <label htmlFor="category">Category:</label>
             <input
-              className="w3-input" 
+              className="w3-input"
               type="category"
               id="category"
               name="category"
@@ -73,7 +74,7 @@ export const EditShopForm = ({ match }) => {
             />
             <label htmlFor="description">Decription:</label>
             <textarea
-              className="w3-input" 
+              className="w3-input"
               type="description"
               id="description"
               name="description"
@@ -83,7 +84,7 @@ export const EditShopForm = ({ match }) => {
             />
             <label htmlFor="city">City:</label>
             <input
-              className="w3-input" 
+              className="w3-input"
               type="city"
               id="city"
               name="city"
@@ -95,12 +96,12 @@ export const EditShopForm = ({ match }) => {
                 <div className="w3-bar">
                     <button type="button" className="w3-button w3-white w3-border w3-border-green" onClick={onSaveShopClicked} disabled={!canSave}>
                     Save Shop
-                    </button>           
+                    </button>
 
                     <Link to={`/shops/${shop._id}`} className="w3-button w3-white w3-border w3-border-red" >
                     Cancel
                     </Link>
-                </div> 
+                </div>
             </div>
           </form>
         </section>
