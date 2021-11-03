@@ -9,8 +9,8 @@ const remoteDB = new PouchDB('http://localhost:5984/reactcrudrtk', {
         password: "242$Brazzaville"
     }
 })
-function sync () { 
-  return localDB.sync(remoteDB, {live: true, retry: true}) 
+function sync () {
+  return localDB.sync(remoteDB, {live: true, retry: true})
 }
 sync()
 
@@ -22,8 +22,8 @@ const initialState = {
 }
 
 export const fetchShops = createAsyncThunk('shops/fetchShops', async () => {
-//   const response = await client.get('/fakeApi/shops')  
-    const response = 
+//   const response = await client.get('/fakeApi/shops')
+    const response =
     await localDB.allDocs({ include_docs: true});
     const rows = response.rows.filter(element => element.doc.type === "shop" || element.doc.type === "shops")
     let shopsArray = []
